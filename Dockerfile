@@ -70,7 +70,6 @@ RUN set -x \
     && rm -rf /tmp/rocketmq.zip \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone \
     && mkdir -p ${BASE_DIR}/data/{rocketmq,logs,console} \
-    && mkdir -p ${BASE_DIR}/data/rocketmq/store \
     && mkdir -p ${BASE_DIR}/data/console/{config,store} \
     && mv /tmp/asset/console/users.properties ${BASE_DIR}/data/console/store \
     && mv /tmp/asset/console/* ${BASE_DIR}/data/console/config \
@@ -81,7 +80,8 @@ RUN set -x \
     # 创建软链接
     && ln -s ${BASE_DIR}/data/logs ${BASE_DIR}/logs \
     && ln -s ${BASE_DIR}/data/rocketmq/conf ${ROCKETMQ_HOME}/conf \
-    && ln -s ${BASE_DIR}/data/rocketmq/store ${ROCKETMQ_HOME}/store \
+    && ln -s ${BASE_DIR}/store ${ROCKETMQ_HOME}/store \
+    && ln -s ${BASE_DIR}/store ${BASE_DIR}/data/rocketmq/store \
     && ln -s ${BASE_DIR}/data/console/config ${CONSOLE_HOME}/config \
     && ln -s ${BASE_DIR}/data/console/store ${CONSOLE_HOME}/store \
     # 添加组
