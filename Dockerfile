@@ -1,4 +1,4 @@
-FROM centos:8 AS ROCKETMQ_DASHBOARD_BUILD
+FROM centos:7 AS ROCKETMQ_DASHBOARD_BUILD
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 ENV MAVEN_HOME="/home/maven/apache-maven-3.8.6"
@@ -6,8 +6,8 @@ ENV MAVEN_HOME="/home/maven/apache-maven-3.8.6"
 ARG ROCKETMQ_DASHBOARD_VERSION=1.0.0
 
 RUN set -x \
-    && sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* \
-    && yum update -y \
+    # && sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* \
+    # && yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel unzip \
     && yum clean all -y \
     && mkdir -p /home/{console,maven} \
@@ -21,7 +21,7 @@ RUN set -x \
     && mvn package -Dfile.encoding=UTF8 -Dmaven.test.skip=true -file pom.xml \
     && mv /home/console/rocketmq-dashboard/target/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}.jar /home/console/rocketmq-dashboard.jar
 
-FROM centos:8
+FROM centos:7
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 # 环境变量
@@ -29,19 +29,16 @@ ENV ROCKETMQ_VERSION="5.1.4" \
     BASE_DIR="/home/app" \
     ROCKETMQ_HOME="/home/app/rocketmq" \
     CONSOLE_HOME="/home/app/console" \
-    CLASSPATH=".:/home/nacos/conf:$CLASSPATH" \
-    JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk" \
-    JAVA="/usr/lib/jvm/java-1.8.0-openjdk/bin/java" \
     TIME_ZONE="Asia/Shanghai" \
     # namesrv jvm参数
-    NAMESRV_XMS=1024m \
-    NAMESRV_XMX=1024m \
+    NAMESRV_XMS=256m \
+    NAMESRV_XMX=256m \
     NAMESRV_XMN=256m \
     # broker jvm参数
-    BROKER_XMS=1024m \
-    BROKER_XMX=1024m \
+    BROKER_XMS=256m \
+    BROKER_XMX=256m \
     BROKER_XMN=256m \
-    BROKER_MDM=1024m
+    BROKER_MDM=256m
 
 ARG ROCKETMQ_VERSION=5.1.4
 
@@ -59,7 +56,7 @@ ARG gid=3000
 
 RUN set -x \
     # 安装jdk及其他工具
-    && sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* \
+    # && sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* \
     && yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools vim unzip \
     && yum clean all -y \
