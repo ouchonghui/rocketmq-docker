@@ -15,15 +15,12 @@ Apache RocketMQ 是一个具有低延迟、高性能和高可靠性、万亿级�
 docker pull ochh/rocketmq:latest
 ```
 
-### 创建卷
-
-```shell
-docker volume create rocketmq_data
-```
-
 ### Docker命令部署
 
 ```shell
+# 创建卷
+docker volume create rocketmq_data
+
 # Linux 或 Mac
 docker run -itd \
  --name=rocketmq \
