@@ -50,7 +50,7 @@ COPY --from=ROCKETMQ_DASHBOARD_BUILD /home/console/rocketmq-dashboard.jar ${CONS
 COPY ["./asset", "/tmp/asset/"]
 
 RUN set -x \
-    && apk add --no-cache openjdk8-jre curl bash \
+    && apk add --no-cache openjdk8 curl bash \
     # 下载rocketmq压缩包
     && curl -SL https://archive.apache.org/dist/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
