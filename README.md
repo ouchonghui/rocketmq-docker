@@ -17,6 +17,8 @@ docker pull ochh/rocketmq:latest
 
 ### Docker命令部署
 
+> <span style="color: red;">注意：需要替换命令中环境变量 `HOST_IP` 为自己本机IP，这个环境变量必须配置，否则应用程序连接不到broker</span>
+
 ```shell
 # 创建卷
 docker volume create rocketmq_data
@@ -28,11 +30,10 @@ docker run -itd \
  --hostname=alpine \
  -p 8080:8080 \
  -p 9876:9876 \
- -p 10909:10909 \
- -p 10911:10911 \
- -p 10912:10912 \
+ -p 10909-10912:10909-10912 \
  -v rocketmq_data:/home/app/data \
  -v /etc/localtime:/etc/localtime \
+ -e HOST_IP=本机IP \
  ochh/rocketmq:latest
  
  # Windows
@@ -42,11 +43,10 @@ docker run -itd \
  --hostname=alpine `
  -p 8080:8080 `
  -p 9876:9876 `
- -p 10909:10909 `
- -p 10911:10911 `
- -p 10912:10912 `
+ -p 10909-10912:10909-10912 `
  -v rocketmq_data:/home/app/data `
  -v /etc/localtime:/etc/localtime `
+ -e HOST_IP=本机IP `
  ochh/rocketmq:latest
 ```
 
@@ -63,12 +63,12 @@ services:
     ports:
       - 8080:8080
       - 9876:9876
-      - 10909:10909
-      - 10911:10911
-      - 10912:10912
+      - 10909-10912:10909-10912
     volumes:
       - "rocketmq_data:/home/app/data"
       - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      HOST_IP: 本机IP
 
 volumes:
   rocketmq_data:

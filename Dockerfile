@@ -25,9 +25,9 @@ LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 # 环境变量
 ENV ROCKETMQ_VERSION="5.1.4" \
-    BASE_DIR="/home/app" \
-    ROCKETMQ_HOME="/home/app/rocketmq" \
-    CONSOLE_HOME="/home/app/console" \
+    BASE_DIR="/root" \
+    ROCKETMQ_HOME="/root/rocketmq" \
+    CONSOLE_HOME="/root/console" \
     TIME_ZONE="Asia/Shanghai" \
     # namesrv jvm参数
     NAMESRV_XMS=512m \
@@ -39,7 +39,9 @@ ENV ROCKETMQ_VERSION="5.1.4" \
     BROKER_XMN=256m \
     BROKER_MDM=512m \
     # console 参数
-    NAMESRV_ADDR="localhost:9876"
+    NAMESRV_ADDR="localhost:9876" \
+    # 宿主机ip地址: 需要提供给broker.conf使用，以将broker注册地址修改为外网地址，否则默认注册的是docker内部ip地址，外部应用程序无法访问到broker
+    HOST_IP="127.0.0.1"
 
 ARG ROCKETMQ_VERSION=5.1.4
 
@@ -54,8 +56,8 @@ RUN set -x \
     # 下载rocketmq压缩包
     && curl -SL https://archive.apache.org/dist/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
-    && unzip /tmp/rocketmq.zip -d /home/app/ \
-    && mv /home/app/rocketmq-all-${ROCKETMQ_VERSION}-bin-release /home/app/rocketmq \
+    && unzip /tmp/rocketmq.zip -d ${BASE_DIR}/ \
+    && mv ${BASE_DIR}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release ${BASE_DIR}/rocketmq \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone \
     && mkdir -p ${BASE_DIR}/data/rocketmq \
     && mkdir -p ${BASE_DIR}/data/logs \
@@ -78,15 +80,15 @@ RUN set -x \
     && chmod 644 -R ${BASE_DIR} \
     # 将目录统一设置成755
     && find ${BASE_DIR} -type d -print | xargs chmod 755 \
-    # 将/home/app/rocketmq/rocketmq/bin下统一设置成755
+    # 将${BASE_DIR}/rocketmq/rocketmq/bin下统一设置成755
     && chmod 755 -R ${ROCKETMQ_HOME}/bin \
-    # 将/home/app/run.sh更名为/home/app/.run.sh
+    # 将${BASE_DIR}/run.sh更名为${BASE_DIR}/.run.sh
     && mv ${BASE_DIR}/run.sh ${BASE_DIR}/.run.sh \
-    # 将/home/app/.run.sh设置为755
+    # 将${BASE_DIR}/.run.sh设置为755
     && chmod 755 ${BASE_DIR}/.run.sh
 
 # 导出端口
-EXPOSE 8080 9876 10909 10911 10912
+EXPOSE 8080 9876 10909 10910 10911 10912
 
 # 匿名卷
 VOLUME ${BASE_DIR}/data
