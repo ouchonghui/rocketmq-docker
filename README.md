@@ -3,7 +3,7 @@
 ## 简介
 
 Apache RocketMQ 是一个具有低延迟、高性能和高可靠性、万亿级容量和灵活的分布式消息和流平台。
-本镜像基于`CentOS 8`采用Apache RocketMQ官方已发布版本进行构建，内置`net-tools`、`vim`软件方便开发者使用。
+本镜像基于`alpine:3.19`采用Apache RocketMQ官方已发布版本进行构建。
 
 ## 快速部署
 
@@ -25,6 +25,7 @@ docker volume create rocketmq_data
 docker run -itd \
  --name=rocketmq \
  --restart=always \
+ --hostname=alpine \
  -p 8080:8080 \
  -p 9876:9876 \
  -p 10909:10909 \
@@ -38,6 +39,7 @@ docker run -itd \
  docker run -itd `
  --name=rocketmq `
  --restart=always `
+ --hostname=alpine `
  -p 8080:8080 `
  -p 9876:9876 `
  -p 10909:10909 `
@@ -57,6 +59,7 @@ services:
     image: ochh/rocketmq-test
     container_name: "rocketmq"
     restart: always
+    hostname: alpine
     ports:
       - 8080:8080
       - 9876:9876
