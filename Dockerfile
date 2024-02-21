@@ -24,7 +24,7 @@ FROM alpine:3.19
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 # 环境变量
-ENV ROCKETMQ_VERSION="5.1.4" \
+ENV ROCKETMQ_VERSION="5.2.0" \
     BASE_DIR="/root" \
     ROCKETMQ_HOME="/root/rocketmq" \
     CONSOLE_HOME="/root/console" \
@@ -43,7 +43,7 @@ ENV ROCKETMQ_VERSION="5.1.4" \
     # 宿主机ip地址: 需要提供给broker.conf使用，以将broker注册地址修改为外网地址，否则默认注册的是docker内部ip地址，外部应用程序无法访问到broker
     HOST_IP="127.0.0.1"
 
-ARG ROCKETMQ_VERSION=5.1.4
+ARG ROCKETMQ_VERSION=5.2.0
 
 WORKDIR ${BASE_DIR}
 
