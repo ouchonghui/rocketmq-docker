@@ -1,4 +1,5 @@
 FROM alpine:3.19 AS ROCKETMQ_DASHBOARD_BUILD
+
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 ENV MAVEN_HOME="/home/maven/apache-maven-3.8.6"
