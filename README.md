@@ -56,7 +56,7 @@ docker run -itd \
 version: "3"
 services:
   rocketmq:
-    image: ochh/rocketmq-test
+    image: ochh/rocketmq
     container_name: "rocketmq"
     restart: always
     hostname: alpine
