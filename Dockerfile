@@ -25,8 +25,7 @@ FROM alpine:3.19
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
 # 环境变量
-ENV ROCKETMQ_VERSION=${ROCKETMQ_VERSION} \
-    BASE_DIR="/root" \
+ENV BASE_DIR="/root" \
     ROCKETMQ_HOME="/root/rocketmq" \
     CONSOLE_HOME="/root/console" \
     TIME_ZONE="Asia/Shanghai" \
