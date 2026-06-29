@@ -7,7 +7,7 @@ ENV MAVEN_HOME="/home/maven/apache-maven-3.8.6"
 ARG ROCKETMQ_DASHBOARD_VERSION=1.0.0
 
 RUN set -x \
-    && apk add --no-cache openjdk8 curl  \
+    && apk add --no-cache openjdk17 curl  \
     && mkdir -p /home/console && mkdir -p /home/maven \
     && curl -SL https://archive.apache.org/dist/rocketmq/rocketmq-dashboard/${ROCKETMQ_DASHBOARD_VERSION}/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}-source-release.zip -o /home/console/rocketmq-dashboard.zip \
     && unzip /home/console/rocketmq-dashboard.zip -d /home/console/ \
@@ -18,7 +18,7 @@ RUN set -x \
     && cd /home/console/rocketmq-dashboard \
     && mvn clean package -Dmaven.test.skip=true \
     && mv /home/console/rocketmq-dashboard/target/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}.jar /home/console/rocketmq-dashboard.jar \
-    && apk del curl openjdk8-jre
+    && apk del curl openjdk17-jre
 
 FROM alpine:3.19
 
@@ -52,7 +52,7 @@ COPY --from=ROCKETMQ_DASHBOARD_BUILD /home/console/rocketmq-dashboard.jar ${CONS
 COPY ["./asset", "/tmp/asset/"]
 
 RUN set -x \
-    && apk add --no-cache openjdk8 curl bash \
+    && apk add --no-cache openjdk17 curl bash \
     # 下载rocketmq压缩包
     && curl -SL https://archive.apache.org/dist/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
