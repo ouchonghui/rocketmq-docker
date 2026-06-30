@@ -10,7 +10,7 @@ RUN set -x \
     && apt-get update \
     && apt-get install -y wget unzip tar curl openjdk-17-jdk gzip  \
     && mkdir -p /home/console/rocketmq-dashboard && mkdir -p /home/maven \
-    && curl -SL https://archive.apache.org/dist/rocketmq/rocketmq-dashboard/${ROCKETMQ_DASHBOARD_VERSION}/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}-source-release.zip -o /home/console/rocketmq-dashboard.zip \
+    && curl -SL https://dist.apache.org/repos/dist/release/rocketmq/rocketmq-dashboard/${ROCKETMQ_DASHBOARD_VERSION}/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}-source-release.zip -o /home/console/rocketmq-dashboard.zip \
     && unzip /home/console/rocketmq-dashboard.zip -d /home/console/rocketmq-dashboard/tmp_unzip/ \
     && TOP_DIR=$(ls /home/console/rocketmq-dashboard/tmp_unzip) && mv "/home/console/rocketmq-dashboard/tmp_unzip/$TOP_DIR"/* /home/console/rocketmq-dashboard/ \
     && curl -SL https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.zip -o /home/maven/maven.zip \
@@ -54,7 +54,7 @@ COPY ["./asset", "/tmp/asset/"]
 RUN set -x \
     && apk add --no-cache openjdk17 curl bash \
     # 下载rocketmq压缩包
-    && curl -SL https://archive.apache.org/dist/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
+    && curl -SL https://dist.apache.org/repos/dist/release/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
     && unzip /tmp/rocketmq.zip -d ${BASE_DIR}/ \
     && mv ${BASE_DIR}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release ${BASE_DIR}/rocketmq \
