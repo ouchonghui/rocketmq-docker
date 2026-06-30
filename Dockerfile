@@ -1,4 +1,4 @@
-FROM alpine:3.19 AS ROCKETMQ_DASHBOARD_BUILD
+FROM ubuntu:latest AS ROCKETMQ_DASHBOARD_BUILD
 
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
@@ -7,7 +7,8 @@ ENV MAVEN_HOME="/home/maven/apache-maven-3.8.6"
 ARG ROCKETMQ_DASHBOARD_VERSION=1.0.0
 
 RUN set -x \
-    && apk add --no-cache openjdk17 curl  \
+    && apt-get update \
+    && apt-get install -y wget unzip tar curl openjdk-17-jdk gzip  \
     && mkdir -p /home/console/rocketmq-dashboard && mkdir -p /home/maven \
     && curl -SL https://archive.apache.org/dist/rocketmq/rocketmq-dashboard/${ROCKETMQ_DASHBOARD_VERSION}/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}-source-release.zip -o /home/console/rocketmq-dashboard.zip \
     && unzip /home/console/rocketmq-dashboard.zip -d /home/console/rocketmq-dashboard/tmp_unzip/ \
@@ -17,8 +18,7 @@ RUN set -x \
     && export PATH=$PATH:$MAVEN_HOME/bin \
     && cd /home/console/rocketmq-dashboard \
     && mvn clean package -Dmaven.test.skip=true \
-    && mv /home/console/rocketmq-dashboard/target/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}.jar /home/console/rocketmq-dashboard.jar \
-    && apk del curl openjdk17-jre
+    && mv /home/console/rocketmq-dashboard/target/rocketmq-dashboard-${ROCKETMQ_DASHBOARD_VERSION}.jar /home/console/rocketmq-dashboard.jar 
 
 FROM alpine:3.19
 
