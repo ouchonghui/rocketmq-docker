@@ -24,24 +24,23 @@ ENV BASE_DIR="/app" \
 
 ARG ROCKETMQ_VERSION=${ROCKETMQ_VERSION}
 
-WORKDIR ${BASE_DIR}
-
 COPY ["./asset", "/tmp/asset/"]
 
 RUN set -x \
-    && apk add --no-cache openjdk17-jre curl bash \
+    && apk add --no-cache openjdk17 curl bash \
     # 下载rocketmq压缩包
     && curl -SL https://dist.apache.org/repos/dist/release/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone \
-    # 解压rocketmq压缩包
-    && unzip /tmp/rocketmq.zip -d ${BASE_DIR}/ \
-    && mv ${BASE_DIR}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release ${BASE_DIR}/rocketmq \
     # 创建数据目录
+    && mkdir -pv ${BASE_DIR} \
     && mkdir -pv ${DATA_DIR}/rocketmq \
     && mkdir -pv ${DATA_DIR}/console/config \
     && mkdir -pv ${DATA_DIR}/console/store \
     && mkdir -pv ${CONSOLE_HOME} \
+    # 解压rocketmq压缩包
+    && unzip /tmp/rocketmq.zip -d ${BASE_DIR}/ \
+    && mv ${BASE_DIR}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release ${BASE_DIR}/rocketmq \
     # 移动rocketmq-dashboard
     && mv /tmp/asset/console/rocketmq-dashboard-2.1.1-SNAPSHOT.jar ${CONSOLE_HOME}/rocketmq-dashboard.jar \
     # 移动配置文件
@@ -58,6 +57,8 @@ RUN set -x \
     && mv ${BASE_DIR}/run.sh ${BASE_DIR}/.run.sh \
     # 将${BASE_DIR}/.run.sh设置为755
     && chmod 755 ${BASE_DIR}/.run.sh
+
+WORKDIR /root
 
 # 导出端口
 EXPOSE 8080 8081 8082 9876 10909 10911 10912
