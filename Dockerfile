@@ -27,7 +27,7 @@ ARG ROCKETMQ_VERSION=${ROCKETMQ_VERSION}
 COPY ["./asset", "/tmp/asset/"]
 
 RUN set -x \
-    && apk add --no-cache openjdk17 curl bash \
+    && apk add --no-cache openjdk17 curl bash gcompat libstdc++ \
     # 下载rocketmq压缩包
     && curl -SL https://dist.apache.org/repos/dist/release/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o /tmp/rocketmq.zip \
     && apk del curl \
