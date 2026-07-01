@@ -27,11 +27,16 @@ docker volume create rocketmq_data
 docker run -itd \
  --name=rocketmq \
  --restart=always \
- --hostname=alpine \
+ --hostname=rocketmq \
  -p 8080:8080 \
+ -p 8081:8081 \
+ -p 8082:8082 \
  -p 9876:9876 \
- -p 10909-10912:10909-10912 \
+ -p 10909:10909 \
+ -p 10911:10911 \
+ -p 10912:10912 \
  -v rocketmq_data:/home/app/data \
+ -v ./logs:/root/logs \
  -v /etc/localtime:/etc/localtime \
  -e HOST_IP=本机IP \
  ochh/rocketmq:latest
@@ -40,11 +45,16 @@ docker run -itd \
  docker run -itd `
  --name=rocketmq `
  --restart=always `
- --hostname=alpine `
+ --hostname=rocketmq `
  -p 8080:8080 `
+ -p 8081:8081 `
+ -p 8082:8082 `
  -p 9876:9876 `
- -p 10909-10912:10909-10912 `
- -v rocketmq_data:/home/app/data `
+ -p 10909:10909 `
+ -p 10911:10911 `
+ -p 10912:10912 `
+ -v rocketmq_data:/root/data `
+ -v ./logs:/root/logs `
  -v /etc/localtime:/etc/localtime `
  -e HOST_IP=本机IP `
  ochh/rocketmq:latest
@@ -59,13 +69,18 @@ services:
     image: ochh/rocketmq
     container_name: "rocketmq"
     restart: always
-    hostname: alpine
+    hostname: rocketmq
     ports:
       - 8080:8080
+      - 8081:8081
+      - 8082:8082
       - 9876:9876
-      - 10909-10912:10909-10912
+      - 10909:10909
+      - 10911:10911
+      - 10912:10912
     volumes:
-      - "rocketmq_data:/home/app/data"
+      - "rocketmq_data:/root/data"
+      - "./logs:/root/logs"
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       HOST_IP: 本机IP
@@ -75,7 +90,7 @@ volumes:
     name: rocketmq_data
 ```
 
-### 控制台
+### 控制台 (http://ip:8082)
 
 ```text
 管理员
