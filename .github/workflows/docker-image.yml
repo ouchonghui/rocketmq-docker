@@ -19,10 +19,6 @@ jobs:
         with:
           lfs: true
 
-      - name: 查看文件是否存在
-        run: |
-          ls -alh ./asset/console
-
       - name: 初始化QEMU
         uses: docker/setup-qemu-action@v4
 
@@ -52,7 +48,6 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           build-args: |
             ROCKETMQ_VERSION=${{github.ref_name}}
-            ROCKETMQ_DASHBOARD_VERSION=2.1.0
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

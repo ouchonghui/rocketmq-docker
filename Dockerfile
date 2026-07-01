@@ -6,7 +6,7 @@ LABEL maintainer="chongh.ou <ochhgz@163.com>"
 ENV BASE_DIR="/app" \
     ROCKETMQ_HOME="/app/rocketmq" \
     CONSOLE_HOME="/app/console" \
-    DATA_DIR="/root" \
+    DATA_DIR="/root/data" \
     TIME_ZONE="Asia/Shanghai" \
     # namesrv jvm参数
     NAMESRV_XMS=512m \
@@ -38,22 +38,23 @@ RUN set -x \
     && unzip /tmp/rocketmq.zip -d ${BASE_DIR}/ \
     && mv ${BASE_DIR}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release ${BASE_DIR}/rocketmq \
     # 创建数据目录
-    && mkdir -p ${DATA_DIR}/data/rocketmq \
-    && mkdir -p ${DATA_DIR}/data/console/{config,store} \
-    && mkdir -p ${CONSOLE_HOME} \
+    && mkdir -pv ${DATA_DIR}/rocketmq \
+    && mkdir -pv ${DATA_DIR}/console/config \
+    && mkdir -pv ${DATA_DIR}/console/store \
+    && mkdir -pv ${CONSOLE_HOME} \
     # 移动rocketmq-dashboard
     && mv /tmp/asset/console/rocketmq-dashboard-2.1.1-SNAPSHOT.jar ${CONSOLE_HOME}/rocketmq-dashboard.jar \
     # 移动配置文件
-    && mv /tmp/asset/console/users.properties ${DATA_DIR}/data/console/store \
-    && mv /tmp/asset/console/* ${DATA_DIR}/data/console/config \
+    && mv /tmp/asset/console/users.properties ${DATA_DIR}/console/store \
+    && mv /tmp/asset/console/* ${DATA_DIR}/console/config \
     && mv /tmp/asset/rocketmq/* ${ROCKETMQ_HOME}/bin \
     && mv /tmp/asset/docker/run.sh ${BASE_DIR}/run.sh \
-    && mv ${ROCKETMQ_HOME}/conf ${DATA_DIR}/data/rocketmq \
+    && mv ${ROCKETMQ_HOME}/conf ${DATA_DIR}/rocketmq \
     && rm -rf /tmp/* \
     # 创建软链接
-    && ln -s ${DATA_DIR}/data/rocketmq/conf ${ROCKETMQ_HOME}/conf \
-    && ln -s ${DATA_DIR}/data/console/config ${CONSOLE_HOME}/config \
-    && ln -s ${DATA_DIR}/data/console/store ${CONSOLE_HOME}/store \
+    && ln -s ${DATA_DIR}/rocketmq/conf ${ROCKETMQ_HOME}/conf \
+    && ln -s ${DATA_DIR}/console/config ${CONSOLE_HOME}/config \
+    && ln -s ${DATA_DIR}/console/store ${CONSOLE_HOME}/store \
     && mv ${BASE_DIR}/run.sh ${BASE_DIR}/.run.sh \
     # 将${BASE_DIR}/.run.sh设置为755
     && chmod 755 ${BASE_DIR}/.run.sh
@@ -62,7 +63,7 @@ RUN set -x \
 EXPOSE 8080 8081 8082 9876 10909 10911 10912
 
 # 匿名卷
-VOLUME ${DATA_DIR}/data
+VOLUME ${DATA_DIR}
 
 #执行脚本
 CMD ${BASE_DIR}/.run.sh
