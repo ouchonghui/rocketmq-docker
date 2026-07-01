@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS ROCKETMQ_DASHBOARD_BUILD
+FROM ubuntu:latest AS rocketmq_dashboard_build
 
 LABEL maintainer="chongh.ou <ochhgz@163.com>"
 
@@ -47,7 +47,7 @@ ARG ROCKETMQ_VERSION=${ROCKETMQ_VERSION}
 
 WORKDIR ${BASE_DIR}
 
-COPY --from=ROCKETMQ_DASHBOARD_BUILD /home/console/rocketmq-dashboard.jar ${CONSOLE_HOME}/rocketmq-dashboard.jar
+COPY --from=rocketmq_dashboard_build /home/console/rocketmq-dashboard.jar ${CONSOLE_HOME}/rocketmq-dashboard.jar
 
 COPY ["./asset", "/tmp/asset/"]
 
