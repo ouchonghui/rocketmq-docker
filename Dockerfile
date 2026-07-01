@@ -40,6 +40,7 @@ RUN set -x \
     # 创建数据目录
     && mkdir -p ${DATA_DIR}/data/rocketmq \
     && mkdir -p ${DATA_DIR}/data/console/{config,store} \
+    && mkdir -p ${CONSOLE_HOME} \
     # 移动rocketmq-dashboard
     && mv /tmp/asset/console/rocketmq-dashboard-2.1.1-SNAPSHOT.jar ${CONSOLE_HOME}/rocketmq-dashboard.jar \
     # 移动配置文件

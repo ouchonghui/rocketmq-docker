@@ -19,6 +19,10 @@ jobs:
         with:
           lfs: true
 
+      - name: 查看文件是否存在
+        run: |
+          ls -alh ./asset/console
+
       - name: 初始化QEMU
         uses: docker/setup-qemu-action@v4
 
