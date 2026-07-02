@@ -35,7 +35,7 @@ docker run -itd \
  -p 10909:10909 \
  -p 10911:10911 \
  -p 10912:10912 \
- -v rocketmq_data:/home/app/data \
+ -v rocketmq_data:/root/data \
  -v ./logs:/root/logs \
  -v /etc/localtime:/etc/localtime \
  -e HOST_IP=本机IP \
@@ -90,7 +90,12 @@ volumes:
     name: rocketmq_data
 ```
 
-### 控制台 (http://ip:8082)
+### 控制台
+
+控制台访问地址:
+
+- 5.5.0及往后版本(dashboard 2.1.1-SNAPSHOT): http://ip:8082
+- 5.5.0之前(dashboard 1.0.0): http://ip:8080
 
 ```text
 管理员
